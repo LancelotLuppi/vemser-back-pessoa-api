@@ -1,7 +1,10 @@
 package br.com.luppi.pessoaapi.controller;
 import br.com.luppi.pessoaapi.config.PropertiesReader;
+import br.com.luppi.pessoaapi.documentation.PessoaDocumentation;
 import br.com.luppi.pessoaapi.dto.PessoaCreateDTO;
 import br.com.luppi.pessoaapi.dto.PessoaDTO;
+import br.com.luppi.pessoaapi.exception.EntidadeNaoEncontradaException;
+import br.com.luppi.pessoaapi.exception.RegraDeNegocioException;
 import br.com.luppi.pessoaapi.service.PessoaService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +24,7 @@ import java.util.List;
 @RequestMapping("/pessoa")
 @Validated
 @Slf4j
-public class PessoaController {
+public class PessoaController implements PessoaDocumentation {
     @Autowired
     private PessoaService pessoaService;
     @Autowired
@@ -29,64 +32,34 @@ public class PessoaController {
     @Autowired
     private PropertiesReader propertiesReader;
 
-    @Operation(summary = "Adicionar pessoa", description = "Adiciona uma pessoa na aplicação")
-        @ApiResponses(
-                value = {
-                        @ApiResponse(responseCode = "200", description = "Adiciona a pessoa"),
-                        @ApiResponse(responseCode = "500", description = "Exception gerada")
-                }
-        )
+
     @PostMapping
-    public ResponseEntity<PessoaDTO> create(@Valid @RequestBody PessoaCreateDTO pessoa) throws Exception {
+    public ResponseEntity<PessoaDTO> post(@Valid @RequestBody PessoaCreateDTO pessoa) throws RegraDeNegocioException {
         return ResponseEntity.ok(pessoaService.create(pessoa));
     }
 
-    @Operation(summary = "Listar pessoas", description = "lista todas as pessoas cadastradas")
-        @ApiResponses(
-                value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna todas as pessoas cadastradas"),
-                        @ApiResponse(responseCode = "500", description = "Exception gerada")
-                }
-        )
+
     @GetMapping // localhost:8080/pessoa
-    public ResponseEntity<List<PessoaDTO>> list() {
+    public ResponseEntity<List<PessoaDTO>> get() {
         return ResponseEntity.ok(pessoaService.list());
     }
 
-    @Operation(summary = "Buscar por nome", description = "lista as pessoas através do nome desejado")
-        @ApiResponses(
-                value = {
-                        @ApiResponse(responseCode = "200", description = "Retorna as pessoas pelo nome"),
-                        @ApiResponse(responseCode = "500", description = "Exception gerada")
-                }
-        )
+
     @GetMapping("/byname")
-    public ResponseEntity<List<PessoaDTO>> listByName(@RequestParam("nome") String nome){
+    public ResponseEntity<List<PessoaDTO>> getByName(@RequestParam("nome") String nome){
         return ResponseEntity.ok(pessoaService.listByName(nome));
     }
 
-    @Operation(summary = "Atualizar pessoa", description = "Atualiza os dados cadastrados de uma pessoa")
-        @ApiResponses(
-                value = {
-                        @ApiResponse(responseCode = "200", description = "Dados atualizados"),
-                        @ApiResponse(responseCode = "500", description = "Exception gerada")
-                }
-        )
+
     @PutMapping("/{idPessoa}") // localhost:8080/pessoa/1000
-    public ResponseEntity<PessoaDTO> update(@PathVariable("idPessoa") Integer id,
-                         @RequestBody @Valid PessoaCreateDTO pessoaAtualizada) throws Exception {
+    public ResponseEntity<PessoaDTO> put(@PathVariable("idPessoa") Integer id,
+                         @RequestBody @Valid PessoaCreateDTO pessoaAtualizada) throws RegraDeNegocioException, EntidadeNaoEncontradaException {
         return ResponseEntity.ok(pessoaService.update(id, pessoaAtualizada));
     }
 
-    @Operation(summary = "Remover pessoa", description = "remove uma pessoa através do id")
-        @ApiResponses(
-                value = {
-                        @ApiResponse(responseCode = "200", description = "Cadastro removido"),
-                        @ApiResponse(responseCode = "500", description = "Exception gerada")
-                }
-        )
+
     @DeleteMapping("/{idPessoa}")
-    public void delete(@PathVariable("idPessoa") Integer id) throws Exception {
+    public void delete(@PathVariable("idPessoa") Integer id) throws RegraDeNegocioException, EntidadeNaoEncontradaException {
         pessoaService.delete(id);
     }
 
