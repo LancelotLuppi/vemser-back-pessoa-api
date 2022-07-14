@@ -3,6 +3,7 @@ import br.com.luppi.pessoaapi.config.PropertiesReader;
 import br.com.luppi.pessoaapi.dto.PessoaCreateDTO;
 import br.com.luppi.pessoaapi.dto.PessoaDTO;
 import br.com.luppi.pessoaapi.service.PessoaService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -89,7 +90,7 @@ public class PessoaController {
         pessoaService.delete(id);
     }
 
-    @Operation(summary = "Informar ambiente utilizado", description = "Informa qual ambiente você está no momento")
+    @Hidden
     @GetMapping("/ambiente")
     public String retornarPropertie() {
         return propertiesReader.getAmbiente();
