@@ -64,6 +64,13 @@ public class PessoaService {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(NOT_FOUND_MESSAGE));
     }
 
+    public Pessoa returnByCpf(String cpf) throws EntidadeNaoEncontradaException {
+        return pessoaRepository.list().stream()
+                .filter(pessoa -> pessoa.getCpf().equals(cpf))
+                .findFirst()
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(NOT_FOUND_MESSAGE));
+    }
+
     public Pessoa converterDTO(PessoaCreateDTO dto) {
         return objectMapper.convertValue(dto, Pessoa.class);
     }

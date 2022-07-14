@@ -2,7 +2,6 @@ package br.com.luppi.pessoaapi.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -23,7 +22,7 @@ public class PessoaCreateDTO {
     private LocalDate dataNascimento;
 
     @Schema(description = "CPF válido")
-    @CPF
+    @NotNull
     private String cpf;
 
     @Schema(description = "seuEmail@dominio")

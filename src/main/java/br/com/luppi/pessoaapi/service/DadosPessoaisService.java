@@ -2,6 +2,7 @@ package br.com.luppi.pessoaapi.service;
 
 import br.com.luppi.pessoaapi.client.DadosPessoaisClient;
 import br.com.luppi.pessoaapi.dto.DadosPessoaisDTO;
+import br.com.luppi.pessoaapi.exception.EntidadeNaoEncontradaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,4 +33,5 @@ public class DadosPessoaisService {
     public void delete(String cpf) {
         dadosPessoaisClient.delete(cpf);
     }
+
 }

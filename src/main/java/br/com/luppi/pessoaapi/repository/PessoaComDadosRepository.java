@@ -43,4 +43,12 @@ public class PessoaComDadosRepository {
         listaPessoasComDados.add(pessoaComDados);
         return pessoaComDados;
     }
+
+    public List<PessoaComDados> list() {
+        return listaPessoasComDados;
+    }
+
+    public void delete(PessoaComDados pessoaComDados) {
+        listaPessoasComDados.remove(pessoaComDados);
+    }
 }
