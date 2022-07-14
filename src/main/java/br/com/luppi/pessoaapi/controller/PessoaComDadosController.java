@@ -33,8 +33,8 @@ public class PessoaComDadosController {
         pessoaComDadosService.delete(cpf);
     }
 
-    @PutMapping("/{cpf}") //TODO resolver: 400 connection closed
-    public PessoaComDadosDTO put(@PathVariable("cpf") String cpf, PessoaComDadosDTO pessoaComDadosDTO) throws EntidadeNaoEncontradaException {
+    @PutMapping("/{cpf}")
+    public PessoaComDadosDTO put(@PathVariable("cpf") String cpf, @RequestBody PessoaComDadosDTO pessoaComDadosDTO) throws EntidadeNaoEncontradaException {
         return pessoaComDadosService.update(cpf, pessoaComDadosDTO);
     }
 
