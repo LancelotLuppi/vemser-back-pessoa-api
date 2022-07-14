@@ -1,6 +1,7 @@
 package br.com.luppi.pessoaapi.service;
 
 import br.com.luppi.pessoaapi.client.DadosPessoaisClient;
+import br.com.luppi.pessoaapi.dto.DadosPessoaisDTO;
 import br.com.luppi.pessoaapi.dto.PessoaComDadosDTO;
 import br.com.luppi.pessoaapi.entity.Pessoa;
 import br.com.luppi.pessoaapi.entity.PessoaComDados;
@@ -43,6 +44,12 @@ public class PessoaComDadosService {
         dadosPessoaisClient.delete(cpf);
         PessoaComDados pessoaComDadosRecuperada = returnByCpf(cpf);
         pessoaComDadosRepository.delete(pessoaComDadosRecuperada);
+    }
+
+    public PessoaComDadosDTO update(String cpf, PessoaComDadosDTO pessoaComDadosDTO) throws EntidadeNaoEncontradaException {
+        PessoaComDados pessoaComDadosAtualizada = returnEntity(pessoaComDadosDTO);
+        PessoaComDados pessoaComDadosRecuperada = returnByCpf(cpf);
+        return returnDTO(pessoaComDadosRepository.update(pessoaComDadosRecuperada, pessoaComDadosAtualizada));
     }
 
     public PessoaComDados returnByCpf(String cpf) throws EntidadeNaoEncontradaException {
