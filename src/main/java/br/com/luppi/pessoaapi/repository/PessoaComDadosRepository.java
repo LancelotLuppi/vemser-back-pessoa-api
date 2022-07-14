@@ -22,12 +22,12 @@ public class PessoaComDadosRepository {
 
 
     public PessoaComDados create(PessoaComDados pessoaComDados) {
+        DadosPessoaisDTO dados = extrairDados(pessoaComDados);
+        dadosPessoaisClient.post(dados);
+
         Pessoa pessoa = extrairPessoa(pessoaComDados);
         Pessoa pessoaCriada = pessoaRepository.create(pessoa);
         pessoaComDados.setIdPessoa(pessoaCriada.getIdPessoa());
-
-        DadosPessoaisDTO dados = extrairDados(pessoaComDados);
-        dadosPessoaisClient.post(dados);
 
         listaPessoasComDados.add(pessoaComDados);
         return pessoaComDados;
