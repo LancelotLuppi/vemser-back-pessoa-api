@@ -1,8 +1,7 @@
 package br.com.luppi.pessoaapi.service;
 
 import br.com.luppi.pessoaapi.entity.Endereco;
-import br.com.luppi.pessoaapi.entity.Pessoa;
-import br.com.luppi.pessoaapi.enums.TipoEmail;
+import br.com.luppi.pessoaapi.entity.PessoaEntity;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
@@ -56,45 +55,45 @@ public class EmailService {
         }
     }
 
-    public void sendCreateEnderecoEmail(Pessoa pessoa, Endereco endereco) {
+    public void sendCreateEnderecoEmail(PessoaEntity pessoaEntity, Endereco endereco) {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
             mimeMessageHelper.setFrom(from);
-            mimeMessageHelper.setTo(pessoa.getEmail());
+            mimeMessageHelper.setTo(pessoaEntity.getEmail());
             mimeMessageHelper.setSubject("Cadastro de endereço");
-            mimeMessageHelper.setText(geContentFromCreateEnderecoTemplate(pessoa, endereco), true);
+            mimeMessageHelper.setText(geContentFromCreateEnderecoTemplate(pessoaEntity, endereco), true);
             emailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {
             e.printStackTrace();
         }
     }
 
-    public void sendUpdateEnderecoEmail(Pessoa pessoa, Endereco endereco) {
+    public void sendUpdateEnderecoEmail(PessoaEntity pessoaEntity, Endereco endereco) {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
             mimeMessageHelper.setFrom(from);
-            mimeMessageHelper.setTo(pessoa.getEmail());
+            mimeMessageHelper.setTo(pessoaEntity.getEmail());
             mimeMessageHelper.setSubject("Atualização de endereço");
-            mimeMessageHelper.setText(geContentFromUpdateEnderecoTemplate(pessoa, endereco), true);
+            mimeMessageHelper.setText(geContentFromUpdateEnderecoTemplate(pessoaEntity, endereco), true);
             emailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {
             e.printStackTrace();
         }
     }
 
-    public void sendDeleteEnderecoEmail(Pessoa pessoa, Endereco endereco) {
+    public void sendDeleteEnderecoEmail(PessoaEntity pessoaEntity, Endereco endereco) {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
             mimeMessageHelper.setFrom(from);
-            mimeMessageHelper.setTo(pessoa.getEmail());
+            mimeMessageHelper.setTo(pessoaEntity.getEmail());
             mimeMessageHelper.setSubject("Remoção de endereço");
-            mimeMessageHelper.setText(geContentFromDeleteEnderecoTemplate(pessoa, endereco), true);
+            mimeMessageHelper.setText(geContentFromDeleteEnderecoTemplate(pessoaEntity, endereco), true);
             emailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {
             e.printStackTrace();
@@ -111,9 +110,9 @@ public class EmailService {
         return html;
     }
 
-    public String geContentFromCreateEnderecoTemplate(Pessoa pessoa, Endereco endereco) throws IOException, TemplateException {
+    public String geContentFromCreateEnderecoTemplate(PessoaEntity pessoaEntity, Endereco endereco) throws IOException, TemplateException {
         Map<String, Object> dados = new HashMap<>();
-        dados.put("nome", pessoa.getNome());
+        dados.put("nome", pessoaEntity.getNome());
         dados.put("tipo", endereco.getTipo());
         dados.put("logradouro", endereco.getLogradouro());
         dados.put("numero", endereco.getNumero());
@@ -124,9 +123,9 @@ public class EmailService {
         return html;
     }
 
-    public String geContentFromUpdateEnderecoTemplate(Pessoa pessoa, Endereco endereco) throws IOException, TemplateException {
+    public String geContentFromUpdateEnderecoTemplate(PessoaEntity pessoaEntity, Endereco endereco) throws IOException, TemplateException {
         Map<String, Object> dados = new HashMap<>();
-        dados.put("nome", pessoa.getNome());
+        dados.put("nome", pessoaEntity.getNome());
         dados.put("tipo", endereco.getTipo());
         dados.put("logradouro", endereco.getLogradouro());
         dados.put("numero", endereco.getNumero());
@@ -137,9 +136,9 @@ public class EmailService {
         return html;
     }
 
-    public String geContentFromDeleteEnderecoTemplate(Pessoa pessoa, Endereco endereco) throws IOException, TemplateException {
+    public String geContentFromDeleteEnderecoTemplate(PessoaEntity pessoaEntity, Endereco endereco) throws IOException, TemplateException {
         Map<String, Object> dados = new HashMap<>();
-        dados.put("nome", pessoa.getNome());
+        dados.put("nome", pessoaEntity.getNome());
         dados.put("tipo", endereco.getTipo());
         dados.put("logradouro", endereco.getLogradouro());
         dados.put("numero", endereco.getNumero());

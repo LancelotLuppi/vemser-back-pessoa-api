@@ -2,7 +2,7 @@ package br.com.luppi.pessoaapi.service;
 
 import br.com.luppi.pessoaapi.dto.PessoaCreateDTO;
 import br.com.luppi.pessoaapi.dto.PessoaDTO;
-import br.com.luppi.pessoaapi.entity.Pessoa;
+import br.com.luppi.pessoaapi.entity.PessoaEntity;
 import br.com.luppi.pessoaapi.exception.EntidadeNaoEncontradaException;
 import br.com.luppi.pessoaapi.exception.RegraDeNegocioException;
 import br.com.luppi.pessoaapi.repository.PessoaRepository;
@@ -23,59 +23,62 @@ public class PessoaService {
 
 
     public PessoaDTO create(PessoaCreateDTO pessoaDto) throws RegraDeNegocioException {
-        Pessoa pessoa = converterDTO(pessoaDto);
-        return retornarDTO(pessoaRepository.create(pessoa));
+        PessoaEntity pessoaEntity = converterDTO(pessoaDto);
+        return retornarDTO(pessoaRepository.save(pessoaEntity));
     }
     public List<PessoaDTO> list(){
-        return pessoaRepository.list().stream()
+        return pessoaRepository.findAll().stream()
                 .map(this::retornarDTO)
                 .collect(Collectors.toList());
     }
 
     public PessoaDTO update(Integer id, PessoaCreateDTO pessoaDto) throws RegraDeNegocioException, EntidadeNaoEncontradaException {
-        Pessoa pessoaAtualizada = converterDTO(pessoaDto);
-        Pessoa pessoaRecuperada = returnPersonById(id);
-        return retornarDTO(pessoaRepository.update(pessoaRecuperada, pessoaAtualizada));
+        PessoaEntity pessoaRecuperada = returnPersonById(id);
+
+        pessoaRecuperada.setCpf(pessoaDto.getCpf());
+        pessoaRecuperada.setEmail(pessoaDto.getEmail());
+        pessoaRecuperada.setDataNascimento(pessoaDto.getDataNascimento());
+        pessoaRecuperada.setNome(pessoaDto.getNome());
+
+        return retornarDTO(pessoaRepository.save(pessoaRecuperada));
     }
 
     public void delete(Integer id) throws EntidadeNaoEncontradaException {
-        Pessoa pessoaRecuperada = returnPersonById(id);
-        pessoaRepository.delete(pessoaRecuperada);
+        PessoaEntity pessoaEntityRecuperada = returnPersonById(id);
+        pessoaRepository.delete(pessoaEntityRecuperada);
     }
 
     public List<PessoaDTO> listByName(String nome) {
-        return pessoaRepository.list().stream()
-                .filter(pessoa -> pessoa.getNome().toUpperCase().contains(nome.toUpperCase()))
+        return pessoaRepository.findAll().stream()
+                .filter(pessoaEntity -> pessoaEntity.getNome().toUpperCase().contains(nome.toUpperCase()))
                 .map(this::retornarDTO)
                 .collect(Collectors.toList());
     }
 
     public void verificarId(Integer idPessoa) throws  EntidadeNaoEncontradaException {
-        pessoaRepository.list().stream()
-                .filter(pessoa -> pessoa.getIdPessoa().equals(idPessoa))
+        pessoaRepository.findById(idPessoa).stream()
                 .findFirst()
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(NOT_FOUND_MESSAGE));
     }
 
-    public Pessoa returnPersonById(Integer id) throws EntidadeNaoEncontradaException {
-        return pessoaRepository.list().stream()
-                .filter(pessoa -> pessoa.getIdPessoa().equals(id))
+    public PessoaEntity returnPersonById(Integer id) throws EntidadeNaoEncontradaException {
+        return pessoaRepository.findById(id).stream()
                 .findFirst()
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(NOT_FOUND_MESSAGE));
     }
 
-    public Pessoa returnByCpf(String cpf) throws EntidadeNaoEncontradaException {
-        return pessoaRepository.list().stream()
-                .filter(pessoa -> pessoa.getCpf().equals(cpf))
+    public PessoaEntity returnByCpf(String cpf) throws EntidadeNaoEncontradaException {
+        return pessoaRepository.findAll().stream()
+                .filter(pessoaEntity -> pessoaEntity.getCpf().equals(cpf))
                 .findFirst()
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(NOT_FOUND_MESSAGE));
     }
 
-    public Pessoa converterDTO(PessoaCreateDTO dto) {
-        return objectMapper.convertValue(dto, Pessoa.class);
+    public PessoaEntity converterDTO(PessoaCreateDTO dto) {
+        return objectMapper.convertValue(dto, PessoaEntity.class);
     }
 
-    public PessoaDTO retornarDTO(Pessoa pessoa) {
-        return objectMapper.convertValue(pessoa, PessoaDTO.class);
+    public PessoaDTO retornarDTO(PessoaEntity pessoaEntity) {
+        return objectMapper.convertValue(pessoaEntity, PessoaDTO.class);
     }
 }

@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.util.List;
 
 public interface PessoaDocumentation {
@@ -20,7 +22,7 @@ public interface PessoaDocumentation {
                         @ApiResponse(responseCode = "500", description = "Exception gerada")
                 }
         )
-    ResponseEntity<PessoaDTO> post(PessoaCreateDTO pessoa) throws RegraDeNegocioException;
+    ResponseEntity<PessoaDTO> post(@Valid @RequestBody PessoaCreateDTO pessoa) throws RegraDeNegocioException;
 
 
     @Operation(summary = "Listar pessoas", description = "lista todas as pessoas cadastradas")
@@ -50,7 +52,7 @@ public interface PessoaDocumentation {
                         @ApiResponse(responseCode = "500", description = "Exception gerada")
                 }
         )
-    ResponseEntity<PessoaDTO> put(Integer id, PessoaCreateDTO pessoaAtualizada) throws RegraDeNegocioException, EntidadeNaoEncontradaException;
+    ResponseEntity<PessoaDTO> put(Integer id, @Valid @RequestBody PessoaCreateDTO pessoaAtualizada) throws RegraDeNegocioException, EntidadeNaoEncontradaException;
 
 
     @Operation(summary = "Remover pessoa", description = "remove uma pessoa através do id")

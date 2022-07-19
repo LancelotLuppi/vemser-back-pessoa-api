@@ -10,20 +10,7 @@ import javax.validation.constraints.Past;
 import java.time.LocalDate;
 
 @Data
-public class PessoaComDadosDTO extends DadosPessoaisDTO {
-    @Schema(description = "Identificador único da pessoa")
-    private Integer idPessoa;
-
-    @Schema(description = "Nome da pessoa")
-    @NotBlank
-    private String nome;
-
-    @Schema(description = "AAAA-MM-DD")
-    @Past
-    @NotNull
-    private LocalDate dataNascimento;
-
-    @Schema(description = "seuEmail@dominio")
-    @Email
-    private String email;
+public class PessoaComDadosDTO {
+    private PessoaDTO pessoaDTO;
+    private DadosPessoaisDTO dadosPessoaisDTO;
 }
