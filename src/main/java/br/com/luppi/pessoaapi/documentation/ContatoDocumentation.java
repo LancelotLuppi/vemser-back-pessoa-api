@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.util.List;
 
 public interface ContatoDocumentation {
@@ -21,7 +23,7 @@ public interface ContatoDocumentation {
                         @ApiResponse(responseCode = "500", description = "Exception gerada")
                 }
         )
-    ResponseEntity<ContatoDTO> post(Integer id, ContatoCreateDTO contato) throws EntidadeNaoEncontradaException, RegraDeNegocioException;
+    ResponseEntity<ContatoDTO> post(Integer id, @Valid @RequestBody ContatoCreateDTO contato) throws EntidadeNaoEncontradaException, RegraDeNegocioException;
 
 
     @Operation(summary = "Listar contatos")
@@ -42,7 +44,7 @@ public interface ContatoDocumentation {
                         @ApiResponse(responseCode = "500", description = "Exception gerada")
                 }
         )
-    ResponseEntity<ContatoDTO> put(Integer id, ContatoCreateDTO contatoAtualizado) throws  RegraDeNegocioException, EntidadeNaoEncontradaException;
+    ResponseEntity<ContatoDTO> put(Integer id, @Valid @RequestBody ContatoCreateDTO contatoAtualizado) throws  RegraDeNegocioException, EntidadeNaoEncontradaException;
 
 
     @Operation(summary = "Apagar contato")

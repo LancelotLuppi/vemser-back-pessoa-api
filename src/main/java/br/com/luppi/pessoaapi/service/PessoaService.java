@@ -32,7 +32,7 @@ public class PessoaService {
                 .collect(Collectors.toList());
     }
 
-    public PessoaDTO update(Integer id, PessoaCreateDTO pessoaDto) throws RegraDeNegocioException, EntidadeNaoEncontradaException {
+    public PessoaDTO update(Integer id, PessoaCreateDTO pessoaDto) throws EntidadeNaoEncontradaException {
         PessoaEntity pessoaRecuperada = returnPersonById(id);
 
         pessoaRecuperada.setCpf(pessoaDto.getCpf());
